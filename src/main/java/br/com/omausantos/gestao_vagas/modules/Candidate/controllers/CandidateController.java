@@ -1,20 +1,25 @@
 package br.com.omausantos.gestao_vagas.modules.Candidate.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.omausantos.gestao_vagas.modules.Candidate.CandidateEntity;
+import br.com.omausantos.gestao_vagas.modules.Candidate.CandidateRepository;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/candidate")
 public class CandidateController {
 
+    @Autowired
+    private CandidateRepository candidateRepository;
+
     @PostMapping("")
-    public void create(@Valid @RequestBody CandidateEntity candidateEntity){
-        System.out.println(candidateEntity);
+    public CandidateEntity create(@Valid @RequestBody CandidateEntity candidateEntity){
+        return this.candidateRepository.save(candidateEntity);
     }
     
 }
