@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.omausantos.gestao_vagas.exceptions.UserFoundException;
-import br.com.omausantos.gestao_vagas.modules.company.CompanyRepository;
 import br.com.omausantos.gestao_vagas.modules.company.entities.CompanyEntity;
+import br.com.omausantos.gestao_vagas.modules.company.repositories.CompanyRepository;
 
 @Service
 public class CreateCompanyUseCase {
