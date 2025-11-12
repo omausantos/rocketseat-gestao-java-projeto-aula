@@ -28,7 +28,7 @@ public class CompanyEntity {
     @Email(message = "Campo deve conter um e-mail válido")
     private String email;
 
-    @Length(min = 3, max = 15, message = "Campo deve conter entre 3 e 15 caracteres")
+    @Length(min = 3, max = 256, message = "Campo deve conter entre 3 e 15 caracteres")
     private String password;
 
     @CreationTimestamp
