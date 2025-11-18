@@ -1,10 +1,15 @@
 package br.com.omausantos.gestao_vagas.modules.security;
 
 import java.io.IOException;
+import java.util.Collections;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import br.com.omausantos.gestao_vagas.providers.JWTProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private JWTProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(
@@ -21,7 +29,22 @@ public class SecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String jwToken = request.getHeader("Authorization");
+
+        if (jwToken != null) {
+            String subject = this.jwtProvider.validateToken(jwToken);
+            if (subject.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
+            request.setAttribute("company_id", subject);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subject, null,
+                    Collections.emptyList());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+
         System.out.println(jwToken);
+
+        filterChain.doFilter(request, response);
     }
 
 }
