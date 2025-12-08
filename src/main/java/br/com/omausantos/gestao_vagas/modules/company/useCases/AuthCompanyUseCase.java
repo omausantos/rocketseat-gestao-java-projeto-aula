@@ -2,6 +2,7 @@ package br.com.omausantos.gestao_vagas.modules.company.useCases;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 import javax.naming.AuthenticationException;
 
@@ -37,15 +38,16 @@ public class AuthCompanyUseCase {
 
         var passwordMatches = this.passwordEncoder.matches(authCompanyDTO.getPassword(), company.getPassword());
 
-        if(!passwordMatches) {
+        if (!passwordMatches) {
             throw new AuthenticationException();
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var jwToken = JWT.create().withIssuer("javagas")
-                        .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
-                        .withSubject(company.getId().toString())
-                        .sign(algorithm);
+                .withSubject(company.getId().toString())
+                .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
+                .withClaim("roles", Arrays.asList("candidate"))
+                .sign(algorithm);
         return jwToken;
     }
 
