@@ -22,6 +22,8 @@ public class CandidateController {
 
     @Autowired
     private CreateCandidateUseCase createCandidateUseCase;
+
+    @Autowired
     private ProfileCandidateUseCase profileCandidateUseCase;
 
     @PostMapping("/")
